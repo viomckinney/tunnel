@@ -1,0 +1,12 @@
+body {
+    background-color: #121212;
+}
+
+* {
+    color: white;
+}
+
+button,
+input {
+    background-color: #121212;
+}

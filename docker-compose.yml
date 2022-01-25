@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  api:
+    build:
+      context: ./api
+    environment:
+      TUNNEL_PG_USER: tunnel
+      TUNNEL_PG_PASSWORD: dev
+      TUNNEL_PG_HOST: postgres
+      TUNNEL_PG_PORT: "5432"
+      TUNNEL_PG_DATABASE: tunnel
+      TUNNEL_PG_SSL_MODE: disable
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: dev
+      POSTGRES_USER: tunnel
+    ports:
+      - "5432:5432"
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginxConfigs/dev.conf:/etc/nginx/conf.d/default.conf
+    environment:
+      NGINX_HOST: dev-media.violet.wtf
+    ports:
+      - 80:80
+    depends_on:
+      - api
